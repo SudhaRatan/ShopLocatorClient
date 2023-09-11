@@ -41,7 +41,7 @@ const AddProduct = () => {
     <>
       {/* <p className='text-2xl font-bold'>Add new product</p> */}
       <div className="text-sm breadcrumbs p-4">
-        <ul>
+        <ul className='text-lg'>
           <li><Link to={'../'}>Inventory</Link></li>
           <li className='text-gray-400'>Add a product</li>
         </ul>

@@ -29,31 +29,35 @@ function App() {
                 <Routes>
                   <Route path='' element={<Home />} />
                   <Route path='login' element={<Login />} />
-                  <Route path="*" element={<Navigate to={'/'} />} />
+                  <Route path="*" element={<Navigate to={'login'} />} />
                 </Routes>
               </>
             } />
-            <Route path="User/*" element={
+            {
               token.role === 'User' &&
-              <>
-                <Routes>
-                  <Route path='' element={<User />} />
-                  <Route path='hi' element={<div>Hi</div>} />
-                </Routes>
-              </>
-            } />
-            <Route path="Shop/*" element={
+              <Route path="User/*" element={
+                token.role === 'User' &&
+                <>
+                  <Routes>
+                    <Route path='' element={<User />} />
+                    <Route path='hi' element={<div>Hi</div>} />
+                  </Routes>
+                </>
+              } />
+            }
+            {
               token.role === 'Shop' &&
-              <>
-                <Routes>
-                  {['', 'Inventory'].map((path, index) => <Route path={path} key={index} element={<Shop />} />)}
-                  <Route path='Inventory/Add' element={<AddInventory />} />
-                  <Route path='AddProduct' element={<AddProduct />} />
-                </Routes>
-              </>
-            } />
-            <Route path="*" element={<Navigate to={'/User'} />} />
-
+              <Route path="Shop/*" element={
+                token.role === 'Shop' &&
+                <>
+                  <Routes>
+                    {['', 'Inventory'].map((path, index) => <Route path={path} key={index} element={<Shop />} />)}
+                    <Route path='Inventory/Add' element={<AddInventory />} />
+                    <Route path='AddProduct' element={<AddProduct />} />
+                  </Routes>
+                </>
+              } />
+            }
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
