@@ -35,7 +35,7 @@ const ProductCard = (props) => {
   }, [])
 
   return (
-    <div className="card rounded-md bg-base-100 drop-shadow-xl">
+    <div className="card rounded-md bg-base-100 drop-shadow-xl" onDoubleClick={() => props.doubleClick(props.product)}>
       <div className='flex justify-center items-center min-w-full'><img style={{ aspectRatio: '4/3' }} src={image ? image : placeHolderImage} alt="Shoes" className='image-full rounded-t-md rounded-r-md' /></div>
       <div className="card-body">
         <p>{product.brand && product.brand}</p>

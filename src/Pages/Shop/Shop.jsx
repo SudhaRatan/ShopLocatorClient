@@ -72,11 +72,10 @@ function Shop() {
 
   return (
     <div className='flex justify-center items-center gap-4 flex-col p-5'>
-      <div className='flex gap-4 justify-between w-11/12 lg:w-5/6' >
+      <div className='flex gap-4 justify-between w-11/12 lg:w-5/6  pl-5 flex-col lg:flex-row lg:items-center ' >
         <h2 className='text-4xl font-bold'>Inventory</h2>
         <div className='flex gap-4'>
-          <Link to={'/Shop/Inventory/Add'} className="btn btn-accent text-gray-100 hover:shadow-lg">Add to inventory</Link>
-          <Link to={'/Shop/AddProduct'} className="btn btn-accent text-gray-100 hover:shadow-lg">Products</Link>
+          <Link to={'/Shop/Inventory/Add'} className="btn btn-accent text-gray-100 hover:shadow-lg">Products</Link>
           <ShopProductsSearch searchProds={searchProds} search={search} handleSearch={handleSearch} handleSearchInput={handleSearchInput} ph="Search Inventory" />
         </div>
       </div>

@@ -8,7 +8,9 @@ import Navbar from './Components/navbar/Navbar'
 import { AuthContext } from './Context/AuthContext'
 import { useState } from 'react'
 import AddInventory from './Pages/Shop/AddInventory'
-import AddProduct from './Pages/Shop/AddProduct'
+import { useEffect } from 'react'
+import { themeChange } from 'theme-change'
+
 export const API = import.meta.env.VITE_API_KEY
 
 function App() {
@@ -18,11 +20,22 @@ function App() {
     role: localStorage.getItem('role')
   })
 
+  useEffect(() => {
+    themeChange(false)
+    // 👆 false parameter is required for react project
+  }, [])
+
+  const [theme,setTheme] = useState(false)
+
+  const toggleTheme = () => {
+    setTheme(!theme)
+  }
+
   return (
-    <div>
+    <div data-theme={theme? "dark" : "light"}>
       <AuthContext.Provider value={[token, setToken]}>
         <BrowserRouter>
-          <Navbar />
+          <Navbar toggleTheme={toggleTheme} />
           <Routes>
             <Route path="*" element={
               <>
@@ -53,7 +66,6 @@ function App() {
                   <Routes>
                     {['', 'Inventory'].map((path, index) => <Route path={path} key={index} element={<Shop />} />)}
                     <Route path='Inventory/Add' element={<AddInventory />} />
-                    <Route path='AddProduct' element={<AddProduct />} />
                   </Routes>
                 </>
               } />
