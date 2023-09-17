@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../Context/AuthContext'
 import axios from 'axios'
 import { API } from '../../App'
@@ -11,20 +11,33 @@ export const placeHolderImage = demo
 function Shop() {
 
   const [inventories, setInventories] = useState(null)
-  const [store,setStore] = useState(inventories)
+  const [store, setStore] = useState(inventories)
   const [token, setToken] = useContext(AuthContext)
   const [search, setSearch] = useState("")
 
-  const getInventories = async () => {
-    var res = await axios.get(`${API}/Inventories`, {
+  const [count,setCount] = useState(0)
+  const navigate = useNavigate()
+
+  const getInventories = async (way) => {
+    console.log(way === ">" ? count + 1 : way === "<" && count > 0 ? count - 1 : count)
+    var res = await axios.get(`${API}/Inventories?page${way === ">" ? count + 1 : way === "<" && count > 0 ? count - 1 : count}`, {
       headers: {
         'Authorization': `Bearer ${token.token}`
       },
       validateStatus: false
     })
     if (res.status == 200) {
-      setInventories(res.data)
-      setStore(res.data)
+      if(res.data.inventories.length > 0){
+        setInventories(res.data.inventories)
+        setStore(res.data.inventories)
+        setCount(res.data.page)
+        console.log(res.data)
+      }else{
+        getInventories()
+      }
+    }else{
+      localStorage.clear()
+      navigate('/login')
     }
   }
 
@@ -61,10 +74,10 @@ function Shop() {
   }
 
   const handleSearchInput = (e) => {
-    if(e.target.value === ""){
+    if (e.target.value === "") {
       setSearch("")
       setInventories(store)
-    }else{
+    } else {
       setSearch(e.target.value)
       searchProds(e.target.value)
     }
@@ -72,7 +85,7 @@ function Shop() {
 
   return (
     <div className='flex justify-center items-center gap-4 flex-col p-5'>
-      <div className='flex gap-4 justify-between w-11/12 lg:w-5/6  pl-5 flex-col lg:flex-row lg:items-center ' >
+      <div className='flex gap-4 justify-between w-11/12  pl-5 flex-col lg:flex-row lg:items-center ' >
         <h2 className='text-4xl font-bold'>Inventory</h2>
         <div className='flex gap-4'>
           <Link to={'/Shop/Inventory/Add'} className="btn btn-accent text-gray-100 hover:shadow-lg">Products</Link>
@@ -85,7 +98,7 @@ function Shop() {
           ?
           inventories.length !== 0
             ?
-            <div className='grid gap-5 w-11/12 lg:w-5/6' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))" }}>
+            <div className='grid gap-5 w-11/12' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))" }}>
               {
                 inventories.map((inventory, index) => {
                   return (

@@ -4,29 +4,41 @@ import { AuthContext } from '../../Context/AuthContext'
 import { API } from '../../App'
 import ProductCard from '../../Components/Product/ProductCard'
 import { Link, useNavigate } from 'react-router-dom'
-import { BiSearchAlt } from "react-icons/bi";
 import ShopProductsSearch from '../../Components/SearchBar/ShopProductsSearch'
 import AddProduct from '../../Components/Product/AddProduct'
+import Pagination from '../../Components/Pagination/Pagination'
 
 const AddInventory = () => {
 
   const [token, setToken] = useContext(AuthContext)
   const [products, setProducts] = useState(null)
   const [search, setSearch] = useState("")
-  const [addToggle,setAddToggle] = useState(false)
+  const [addToggle, setAddToggle] = useState(false)
   const navigate = useNavigate()
 
-  const getProducts = async () => {
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(0)
+
+
+  const getProducts = async (way) => {
     setProducts(null)
-    var products = await axios.get(`${API}/Products/ProductsNotInInventory`, {
+    var products
+    products = await axios.get(`${API}/Products/ProductsNotInInventory?page=${way === ">" ? count + 1 : way === "<" && count > 0 ? count - 1 : count}`, {
       headers: {
         'Authorization': `Bearer ${token.token}`
       },
       validateStatus: false
     })
-    // console.log(products)
+
     if (products.status === 200) {
-      setProducts(products.data)
+      if (products.data.products.length > 0) {
+        console.log(products.data)
+        setProducts(products.data.products)
+        setCount(products.data.page)
+        setPage(Math.ceil(products.data.count / 10))
+      } else {
+        getProducts()
+      }
     } else {
       navigate('/login')
     }
@@ -36,10 +48,13 @@ const AddInventory = () => {
     var resp = await axios.post(`${API}/Inventories`, { ProductId, Quantity }, {
       headers: {
         'Authorization': `Bearer ${token.token}`
-      }
+      },
+      validateStatus:false
     })
-    if (resp.status == 200) {
+    if (resp.status === 200) {
       getProducts()
+    }else if(resp.status === 400){
+      alert(resp.data)
     }
   }
 
@@ -97,26 +112,26 @@ const AddInventory = () => {
     }
   }
 
-  const [updateProduct,setUpdateProduct] = useState(null)
-  const doubleClick = (product) => {
+  const [updateProduct, setUpdateProduct] = useState(null)
+  const editProduct = (product) => {
     modal.current.showModal()
     setAddToggle(true)
-    setUpdateProduct(product) 
+    setUpdateProduct(product)
   }
 
   return (
-    <>
+    <div className='relative'>
       <>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         {/* <button className="btn" onClick={() => document.getElementById('my_modal_5').showModal()}>open modal</button> */}
-        <dialog ref={modal} id="my_modal_4" className="modal modal-middle">
+        <dialog onClose={() => console.log("Closed")} ref={modal} id="my_modal_4" className="modal modal-middle">
           <div className="modal-box w-11/12 max-w-5xl">
-            {addToggle && <AddProduct closeModal={closeModal} update={updateProduct}/>}
+            {addToggle && <AddProduct closeModal={closeModal} update={updateProduct} />}
           </div>
         </dialog>
       </>
       <div className='flex justify-center '>
-        <div className="text-sm breadcrumbs pl-5 flex flex-col lg:flex-row justify-between lg:items-center w-11/12 lg:w-5/6 gap-2">
+        <div className="text-sm breadcrumbs pl-5 flex flex-col lg:flex-row justify-between lg:items-center w-11/12 gap-2">
           <ul className='text-lg'>
             <li><Link to={'../'}>Inventory</Link></li>
             <li className='text-gray-400'>Add</li>
@@ -127,25 +142,28 @@ const AddInventory = () => {
           </div>
         </div>
       </div>
-      <div className='flex justify-center items-center gap-4 flex-col p-5'>
+      <div className='flex justify-center items-center gap-4 flex-col p-5 mb-7'>
         {
           products
             ? products.length !== 0
               ?
-              <div className='grid gap-5 w-11/12 lg:w-5/6' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))" }}>
-                {
-                  products.map((product, index) => {
-                    return (
-                      <ProductCard product={product} key={product.id} doubleClick={doubleClick} AddToInventory={AddToInventory} />
-                    )
-                  })
-                }
-              </div>
+              <>
+                <div className='grid gap-5 w-11/12' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))" }}>
+                  {
+                    products.map((product, index) => {
+                      return (
+                        <ProductCard editProduct={editProduct} product={product} key={product.id} AddToInventory={AddToInventory} />
+                      )
+                    })
+                  }
+                </div>
+                <Pagination count={count} get={getProducts} page={page} />
+              </>
               : <div className='text-lg'>No products found</div>
             : <span className="loading loading-bars loading-lg text-success"></span>
         }
       </div>
-    </>
+    </div>
   )
 }
 

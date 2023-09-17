@@ -9,7 +9,6 @@ import "./style.css"
 const AddProduct = ({ closeModal, update }) => {
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({ defaultValues: update });
-  console.log(update)
   const [message, setMessage] = useState(null)
 
   const onSubmit = async (data) => {
@@ -36,12 +35,10 @@ const AddProduct = ({ closeModal, update }) => {
         validateStatus: false
       })
     }
-    console.log(result)
     if (result.status === 200 || result.status === 204) {
       closeModal(true)
       setMessage(null)
       setImage(null)
-      reset()
     } else if (result.status == 400) {
       setMessage("Fill all fields")
     }
@@ -79,7 +76,7 @@ const AddProduct = ({ closeModal, update }) => {
 
   return (
     <div className=''>
-      <p className='text-2xl font-bold text-center mb-2'>Add new product</p>
+      <p className='text-2xl font-bold text-center mb-2'>{update?'Update':'Add new' } product</p>
       <div className='flex justify-start items-center gap-4 flex-col '>
         {message && <div className='text-red-500 text-lg'>{message}</div>}
         {/* <form onSubmit={handleSubmit(onSubmit)} className='grid grid-flow-row gap-5 w-11/12 md:w-3/4 lg:w-2/5'> */}
@@ -124,7 +121,6 @@ const AddProduct = ({ closeModal, update }) => {
             <div className="btn" onClick={() => {
               setMessage(null)
               setImage(null)
-              reset()
               closeModal()
             }} >Cancel</div>
             <input className="btn btn-primary " type="submit" value={update ? "Update" : "Add"} />

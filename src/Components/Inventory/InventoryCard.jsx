@@ -10,16 +10,16 @@ const InventoryCard = (props) => {
   const [inventory, setInventory] = useState(props.inventory)
   const [image, setImage] = useState(null)
   const [token, setToken] = useContext(AuthContext)
-  const [update, setUpdate] = useState(null)
+  const [count, setCount] = useState(0)
   // console.log(props.inventory)
 
   const increment = () => {
-    setUpdate(true)
     setInventory(prev => ({ ...prev, quantity: prev.quantity + 1 }))
+    setCount(count + 1)
   }
   const decrement = () => {
-    setUpdate(true)
-    setInventory(prev => ({ ...prev, quantity: prev.quantity - 1 }))
+      setInventory(prev => ({ ...prev, quantity: prev.quantity - 1 }))
+      setCount(count - 1)
   }
   const UpdateQuantity = async () => {
     var count = await axios.put(`${API}/Inventories`, inventory, {
@@ -28,8 +28,9 @@ const InventoryCard = (props) => {
       },
       validateStatus: false
     })
-    if (count.status === 200)
-      setUpdate(false)
+    if (count.status === 200){
+      
+    }
   }
 
   const getImage = async () => {
@@ -45,15 +46,15 @@ const InventoryCard = (props) => {
 
   return (
     <div className="card rounded-md bg-base-100 drop-shadow-xl">
-      <div className='flex justify-center items-center min-w-full'><img style={{ aspectRatio:'4/3' }} src={image ? image : placeHolderImage} alt="Shoes" className='image-full rounded-t-md rounded-r-md' /></div>
-      <div className="card-body">
+      <div className='flex justify-center items-center min-w-full'><img style={{ aspectRatio: '4/3' }} src={image ? image : placeHolderImage} alt="Shoes" className='image-full rounded-t-md rounded-r-md' /></div>
+      <div className="card-body p-5">
         <p>{inventory.product.brand && inventory.product.brand}</p>
-        <h2 className="card-title">{inventory.product.name}</h2>
+        <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden" style={{ fontSize: 19 }}>{inventory.product.name}</h2>
         <p className='overflow-ellipsis whitespace-nowrap overflow-hidden'>{inventory.product.description}</p>
         <p>{inventory.product.info && inventory.product.info}</p>
         <div className="card-actions justify-end">
           {
-            update
+            count !== 0 
             &&
             <div className='tooltip border-2 p-1 rounded-lg shadow-md cursor-pointer' data-tip="Save" onClick={UpdateQuantity}>
               <AiOutlineSave size={18} className='text-green-500' />
@@ -62,7 +63,7 @@ const InventoryCard = (props) => {
           <div className="flex justify-center items-center border-2 rounded-lg shadow-md p-1 text-green-500">
             {
               inventory.quantity <= 1
-                ? <AiOutlineDelete size={18} color='#ef4444' onClick={() => props.deleteInventory(inventory.id)} className='cursor-pointer' />
+                ? <AiOutlineMinus size={18} color='#21155e' className='cursor-pointer' />
                 : <AiOutlineMinus size={18} onClick={decrement} className='cursor-pointer' />
             }
             <span className="countdown font-mono text-xl">
