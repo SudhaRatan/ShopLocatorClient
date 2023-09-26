@@ -15,11 +15,10 @@ function Shop() {
   const [token, setToken] = useContext(AuthContext)
   const [search, setSearch] = useState("")
 
-  const [count,setCount] = useState(0)
+  const [count, setCount] = useState(0)
   const navigate = useNavigate()
 
   const getInventories = async (way) => {
-    console.log(way === ">" ? count + 1 : way === "<" && count > 0 ? count - 1 : count)
     var res = await axios.get(`${API}/Inventories?page${way === ">" ? count + 1 : way === "<" && count > 0 ? count - 1 : count}`, {
       headers: {
         'Authorization': `Bearer ${token.token}`
@@ -27,15 +26,15 @@ function Shop() {
       validateStatus: false
     })
     if (res.status == 200) {
-      if(res.data.inventories.length > 0){
+      if (res.data.inventories.length > 0) {
         setInventories(res.data.inventories)
         setStore(res.data.inventories)
         setCount(res.data.page)
-        console.log(res.data)
-      }else{
-        getInventories()
+        // console.log(res.data)
+      } else {
+        setInventories([])
       }
-    }else{
+    } else {
       localStorage.clear()
       navigate('/login')
     }
@@ -87,12 +86,11 @@ function Shop() {
     <div className='flex justify-center items-center gap-4 flex-col p-5'>
       <div className='flex gap-4 justify-between w-11/12  pl-5 flex-col lg:flex-row lg:items-center ' >
         <h2 className='text-4xl font-bold'>Inventory</h2>
-        <div className='flex gap-4'>
+        <div className='flex gap-4 lg:flex-row flex-col items-start'>
           <Link to={'/Shop/Inventory/Add'} className="btn btn-accent text-gray-100 hover:shadow-lg">Products</Link>
           <ShopProductsSearch searchProds={searchProds} search={search} handleSearch={handleSearch} handleSearchInput={handleSearchInput} ph="Search Inventory" />
         </div>
       </div>
-
       {
         inventories
           ?
@@ -107,7 +105,8 @@ function Shop() {
                 })
               }
             </div>
-            : <div>Add products to the inventory to appear here</div>
+            :
+            <div>Add products to the inventory to appear here</div>
           :
           <span className="loading loading-bars loading-lg text-success"></span>
       }

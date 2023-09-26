@@ -32,7 +32,6 @@ const AddInventory = () => {
 
     if (products.status === 200) {
       if (products.data.products.length > 0) {
-        console.log(products.data)
         setProducts(products.data.products)
         setCount(products.data.page)
         setPage(Math.ceil(products.data.count / 10))
@@ -133,7 +132,7 @@ const AddInventory = () => {
       <div className='flex justify-center '>
         <div className="text-sm breadcrumbs pl-5 flex flex-col lg:flex-row justify-between lg:items-center w-11/12 gap-2">
           <ul className='text-lg'>
-            <li><Link to={'../'}>Inventory</Link></li>
+            <li><Link to={'..'}>Inventory</Link></li>
             <li className='text-gray-400'>Add</li>
           </ul>
           <div className='flex gap-4'>

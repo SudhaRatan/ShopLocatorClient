@@ -70,19 +70,18 @@ const ProductCard = (props) => {
             </div>
           </div>
         </div>
-        <div className={`flip-card-back rounded-md drop-shadow-xl absolute top-0 p-2 overflow-hidden`} style={{
+        <div className={`flip-card-back rounded-md drop-shadow-xl absolute top-0 overflow-hidden p-0 w-full`} style={{
           transform: click ? 'rotateY(0deg)' : 'rotateY(-180deg)',
           transition: 'all 0.6s',
           backgroundImage: ` linear-gradient(to bottom,#00000095,#ffffff40),url(${image ? image : placeHolderImage})`,
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
         }}>
-          <div className='flex justify-between flex-row cursor-pointer '>
-            <div></div>
+          <div className='flex justify-end flex-row cursor-pointer m-2'>
             <TiArrowBack color='#ffffff' size={22} onClick={() => setClick(!click)} />
           </div>
           <div className='flex flex-col h-full'>
-            <div className='overflow-scroll p-2 bg-base-200 flex flex-col gap-4 translate-y-[50%] hover:translate-y-[0%] flex-1 rounded-s-xl rounded-e-xl '
+            <div className='overflow-scroll p-3 bg-base-200 flex flex-col gap-4 translate-y-[50%] hover:translate-y-[0%] flex-1 rounded-s-3xl rounded-e-3xl'
               style={{
                 transition: 'all 0.3s'
               }}
