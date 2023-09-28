@@ -124,7 +124,7 @@ const AddInventory = () => {
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         {/* <button className="btn" onClick={() => document.getElementById('my_modal_5').showModal()}>open modal</button> */}
         <dialog onClose={() => console.log("Closed")} ref={modal} id="my_modal_4" className="modal modal-middle">
-          <div className="modal-box w-11/12 max-w-5xl">
+          <div className="modal-box w-full max-w-5xl">
             {addToggle && <AddProduct closeModal={closeModal} update={updateProduct} />}
           </div>
         </dialog>
@@ -135,7 +135,7 @@ const AddInventory = () => {
             <li><Link to={'..'}>Inventory</Link></li>
             <li className='text-gray-400'>Add</li>
           </ul>
-          <div className='flex gap-4'>
+          <div className='flex items-start gap-4 md:flex-row flex-col'>
             <div className="btn btn-md btn-accent text-gray-100 hover:shadow-lg" onClick={addProduct}>Add new Product</div>
             <ShopProductsSearch searchProds={searchProds} search={search} handleSearch={handleSearch} handleSearchInput={handleSearchInput} ph="Search Products" />
           </div>

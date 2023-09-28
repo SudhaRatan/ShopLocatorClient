@@ -83,11 +83,11 @@ const AddProduct = ({ closeModal, update }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='grid gap-5 justify-start items-center top-0 md:grid-flow-col-dense md:gap-14' style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(400px,1fr))' }}>
             <div className='flex flex-col gap-4'>
-              <div className='flex gap-4'>
+              <div className='flex gap-4 flex-col md:flex-row'>
                 <input className="input input-bordered w-full" type="text" placeholder="Name" {...register("name", { required: true })} />
                 <input className="input input-bordered w-full" type="number" placeholder="Price" {...register("price", { required: true })} />
               </div>
-              <div className='flex gap-4'>
+              <div className='flex gap-4 flex-col md:flex-row'>
                 <input className="input input-bordered w-full" type="text" placeholder="Brand" {...register("brand", {})} />
                 <input className="input input-bordered w-full" type="text" placeholder="Info" {...register("info", {})} />
               </div>

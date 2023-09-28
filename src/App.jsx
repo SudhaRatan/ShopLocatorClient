@@ -23,7 +23,7 @@ function App() {
     token: localStorage.getItem('token'),
     role: localStorage.getItem('role')
   })
-  const [shopAccess, setShopAccess] = useState(false)
+  const [shopAccess, setShopAccess] = useState(true)
 
   useEffect(() => {
     themeChange(false)

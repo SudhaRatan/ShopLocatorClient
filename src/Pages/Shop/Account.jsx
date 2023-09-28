@@ -6,6 +6,7 @@ import ShopRegister from '../../Components/Login/ShopRegister'
 import { AlertContext } from '../../Context/AlertContext'
 import AddAddress from '../../Components/AddAddress/AddAddress'
 import { useLoadScript } from '@react-google-maps/api';
+import { Link } from 'react-router-dom'
 
 
 export const GAPI = import.meta.env.VITE_MAPS_API_KEY
@@ -22,6 +23,7 @@ const Account = () => {
   const [address, setAddress] = useState(null)
   const [addAddress, setAddAddress] = useState(null)
   const [alert, setAlert] = useContext(AlertContext)
+
   // console.log(errors);
 
   const getAccount = async () => {
@@ -43,7 +45,7 @@ const Account = () => {
       },
       validateStatus: false
     })
-    // console.log(addressResult)
+    console.log(addressResult)
     if (addressResult.status === 200) {
       setAddress(addressResult.data)
     }
@@ -55,11 +57,6 @@ const Account = () => {
 
 
   const addShopAddress = () => {
-    // setAlert({
-    //   show: true,
-    //   message: "Added address",
-    //   type:"success"
-    // })
     AddAddressDialog.current.showModal()
   }
 
@@ -69,11 +66,17 @@ const Account = () => {
   }
 
   const AddAddressDialog = useRef()
+  const addressRef = useRef()
 
   useEffect(() => {
     getAccount()
     getAddress()
   }, [])
+
+  const resetAddressState = () => {
+    addressRef.current.resetState()
+    getAddress()
+  }
 
   return (
     <>
@@ -115,24 +118,28 @@ const Account = () => {
         {
           address
             ?
-            <div>Address</div>
+            <div className='flex flex-col gap-2 bg-base-200 p-8 rounded-md shadow-md items-start'>
+              <div className='my-2 text-3xl font-semibold'>Address<hr /></div>
+              <div><b>Building name: </b>{address.building}</div>
+              <div><b>Address: </b>{address.address}</div>
+              {address.landmark !== "" && <div><b>Landmark: </b>{address.landmark}</div>}
+              <Link to={`https://www.google.com/maps/search/${address.coordinateX},${address.coordinateY}`} target='_blank' className='btn btn-outline'>View on google maps</Link>
+            </div>
             :
             addAddress
               ?
               <>
                 <div className='btn btn-primary' onClick={addShopAddress}>
                   {addAddress}
-
                 </div>
-                {
-                  isLoaded
-                  &&
-                  <dialog onClose={() => console.log("Closed")} ref={AddAddressDialog} className="modal modal-bottom sm:modal-middle"><AddAddress closeModal={closeModal} /></dialog>
-                }
-
               </>
               :
               <span className="loading loading-bars loading-lg text-success"></span>
+        }
+        {
+          isLoaded
+          &&
+          <dialog onClose={resetAddressState} ref={AddAddressDialog} className="modal modal-bottom sm:modal-middle"><AddAddress ref={addressRef} closeModal={closeModal} /></dialog>
         }
       </div>
     </>

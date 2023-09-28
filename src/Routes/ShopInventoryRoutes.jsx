@@ -23,14 +23,13 @@ const ShopInventoryRoutes = () => {
     if (result.status === 200) {
       setShopAccess(true)
     }else{
-      setShopAccess
+      setShopAccess(false)
+      setAlert({ show: true, message: "Add address to continue", type:"warning" })
     }
   }
 
   useEffect(() => {
     getAddress()
-    if (!shopAccess)
-      setAlert({ show: true, message: "Add address to continue", type:"warning" })
   }, [])
 
   return (
