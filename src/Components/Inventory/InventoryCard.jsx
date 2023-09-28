@@ -29,7 +29,7 @@ const InventoryCard = (props) => {
       validateStatus: false
     })
     if (count.status === 200){
-      
+      setCount(0)
     }
   }
 
