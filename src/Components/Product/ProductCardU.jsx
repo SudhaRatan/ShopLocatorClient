@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 import axios from 'axios';
 import { API } from '../../App';
 import { placeHolderImage } from '../../Pages/Shop/Shop';
-import { MdDelete, MdOutlineInventory2 } from "react-icons/md";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { TiArrowBack } from "react-icons/ti";
-import { useContext } from 'react';
-import { AuthContext } from '../../Context/AuthContext';
-import { FiDelete, FiEdit2, FiEdit3 } from "react-icons/fi";
+import { TbShoppingCartPlus } from "react-icons/tb";
 
-const ProductCard = (props) => {
+const ProductCardU = (props) => {
 
-  const [product, setProducts] = useState(props.product)
+  const product = props.product
   const [image, setImage] = useState(null)
   const [count, setCount] = useState(1)
-  const [token, setToken] = useContext(AuthContext)
   // console.log(props.product)
 
   const increment = () => {
@@ -54,26 +50,23 @@ const ProductCard = (props) => {
             <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden" style={{ fontSize: 19 }}>{product.name}</h2>
             <p className='overflow-ellipsis whitespace-nowrap overflow-hidden'>{product.description}</p>
             <p>{product.info && product.info}</p>
-            {
-              token.role === 'Shop'
-              &&
-              <div className="card-actions justify-end">
-                <div className='tooltip border-2 p-1 rounded-lg shadow-md cursor-pointer' data-tip="Add to inventory" onClick={() => props.AddToInventory(product.id, count)}>
-                  <MdOutlineInventory2 size={18} className='text-green-500' />
-                </div>
-                <div className="flex justify-center items-center border-2 rounded-lg shadow-md p-1 text-green-500">
-                  {
-                    product.quantity <= 1
-                      ? <AiOutlineDelete size={18} color='#ef4444' onClick={() => props.deleteInventory(product.id)} className='cursor-pointer' />
-                      : <AiOutlineMinus size={18} onClick={decrement} className='cursor-pointer' />
-                  }
-                  <span className="countdown font-mono text-xl">
-                    <span className='pl-3' style={{ "--value": count }}></span>
-                  </span>
-                  <AiOutlinePlus size={18} onClick={increment} className='cursor-pointer' />
-                </div>
+            <p className='font-semibold'>{product.price && "$"+product.price}</p>
+            <div className="card-actions justify-end">
+              <div className='tooltip border-2 p-1 rounded-lg shadow-md cursor-pointer' data-tip="Add to Cart" onClick={() => props.AddToInventory(product.id, count)}>
+                <TbShoppingCartPlus size={18} className='text-green-500' />
               </div>
-            }
+              <div className="flex justify-center items-center border-2 rounded-lg shadow-md p-1 text-green-500">
+                {
+                  product.quantity <= 1
+                    ? <AiOutlineDelete size={18} color='#ef4444' onClick={() => props.deleteInventory(product.id)} className='cursor-pointer' />
+                    : <AiOutlineMinus size={18} onClick={decrement} className='cursor-pointer' />
+                }
+                <span className="countdown font-mono text-xl">
+                  <span className='pl-3' style={{ "--value": count }}></span>
+                </span>
+                <AiOutlinePlus size={18} onClick={increment} className='cursor-pointer' />
+              </div>
+            </div>
           </div>
         </div>
         <div className={`flip-card-back rounded-md drop-shadow-xl absolute top-0 overflow-hidden p-0 w-full`} style={{
@@ -99,16 +92,6 @@ const ProductCard = (props) => {
               <div className=''><b>₹{product.price}</b></div>
               <div><b>Descripion: </b>{product.description}</div>
             </div>
-            {
-              token.role === 'Admin'
-              &&
-              <>
-                <div className='flex gap-2 absolute bottom-0 right-0 m-2 mb-4'>
-                  <FiEdit3 onClick={() => props.editProduct(product)} size={30} className=' p-1 rounded-lg border-2 border-green-500 text-green-500 bg-base-200 shadow-lg cursor-pointer' />
-                  <MdDelete onClick={() => props.deleteProduct(product.id)} size={30} className=' p-1 rounded-lg border-2 border-red-700 text-red-700 bg-base-200 shadow-lg cursor-pointer' />
-                </div>
-              </>
-            }
           </div>
         </div>
       </div>
@@ -117,4 +100,4 @@ const ProductCard = (props) => {
   )
 }
 
-export default ProductCard
+export default ProductCardU

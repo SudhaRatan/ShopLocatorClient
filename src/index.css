@@ -12,57 +12,79 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-.flip-card-front{
+
+.flip-card-front {
   height: 100%;
   width: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.flip-card-back{
+
+.flip-card-back {
   height: 100%;
   width: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.flip-card-back{
+
+.flip-card-back {
   position: absolute;
   height: 100%;
-  width : 100%;
+  width: 100%;
   background-color: white;
 }
+
 /* .flip-card-back:hover {
   transform: rotateY(0deg);
 } */
 .flip-card-inner {
-  position : relative;
+  position: relative;
   transition: all 0.6s;
   transform-style: preserve-3d;
-  
+
   perspective: 1000px;
 
 }
+
 /* .flip-card:hover .flip-card-back{
   transform: rotateY(0deg);
 } */
 
 /* ===== Scrollbar CSS ===== */
-  /* Firefox */
-  * {
-    scrollbar-width: auto;
-    scrollbar-color: #202124 #ffffff;
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #202124 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff00;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #202124;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+
+@keyframes anim {
+  0% {
+    transform: rotate(0deg);
   }
 
-  /* Chrome, Edge, and Safari */
-  *::-webkit-scrollbar {
-    width: 10px;
+  100% {
+    transform: rotate(360deg);
+    bottom:100%;
   }
+}
 
-  *::-webkit-scrollbar-track {
-    background: #ffffff00;
-  }
-
-  *::-webkit-scrollbar-thumb {
-    background-color: #202124;
-    border-radius: 10px;
-    border: 3px solid #ffffff;
-  }
+.icon{
+  animation: anim 10s linear infinite;
+  position: absolute;
+  bottom: -100px;
+}

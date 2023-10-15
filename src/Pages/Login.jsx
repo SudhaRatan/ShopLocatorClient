@@ -3,7 +3,7 @@ import UserLogin from '../Components/Login/UserLogin'
 import ShopLogin from '../Components/Login/ShopLogin'
 import ShopRegister from '../Components/Login/ShopRegister'
 import UserRegister from '../Components/Login/UserRegister'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { BiSolidUser } from "react-icons/bi";
 import { AiTwotoneShop } from "react-icons/ai";
 
@@ -24,6 +24,8 @@ function Login() {
 				navigate("/Shop")
 			else if (role === "User")
 				navigate("/User")
+			else if (role === 'Admin')
+				navigate("/Admin")
 	}, [])
 
 	return (
@@ -59,7 +61,7 @@ function Login() {
 
 
 			<p>Scroll to register</p>
-
+		<Link to={'/AdminLogin'} className='link'>Admin login</Link>
 		</div>
 	)
 }

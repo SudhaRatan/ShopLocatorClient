@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import ShopProductsSearch from '../../Components/SearchBar/ShopProductsSearch'
 import AddProduct from '../../Components/Product/AddProduct'
 import Pagination from '../../Components/Pagination/Pagination'
+import { AlertContext } from '../../Context/AlertContext'
 
 const AddInventory = () => {
 
@@ -14,14 +15,16 @@ const AddInventory = () => {
   const [products, setProducts] = useState(null)
   const [search, setSearch] = useState("")
   const [addToggle, setAddToggle] = useState(false)
+  const [alert, setAlert] = useContext(AlertContext)
   const navigate = useNavigate()
 
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(0)
 
 
-  const getProducts = async (way) => {
-    setProducts(null)
+  const getProducts = async (way, update) => {
+    if (update)
+      setProducts(null)
     var products
     products = await axios.get(`${API}/Products/ProductsNotInInventory?page=${way === ">" ? count + 1 : way === "<" && count > 0 ? count - 1 : count}`, {
       headers: {
@@ -48,11 +51,11 @@ const AddInventory = () => {
       headers: {
         'Authorization': `Bearer ${token.token}`
       },
-      validateStatus:false
+      validateStatus: false
     })
     if (resp.status === 200) {
       getProducts()
-    }else if(resp.status === 400){
+    } else if (resp.status === 400) {
       alert(resp.data)
     }
   }
@@ -107,15 +110,30 @@ const AddInventory = () => {
     setUpdateProduct(null)
     setAddToggle(false)
     if (refresh) {
-      getProducts()
+      getProducts(null, true)
     }
   }
 
   const [updateProduct, setUpdateProduct] = useState(null)
+
   const editProduct = (product) => {
     modal.current.showModal()
     setAddToggle(true)
     setUpdateProduct(product)
+  }
+
+  const deleteProduct = async (productId) => {
+    const result = await axios.delete(`${API}/Products/${productId}`, {
+      headers: {
+        'Authorization': ` Bearer ${token.token}`
+      },
+      validateStatus: false
+    })
+    if (result.status === 200) {
+      getProducts()
+    } else {
+      setAlert({ show: true, message: "Product in inventory cannot be removed from database", type: "error" })
+    }
   }
 
   return (
@@ -123,7 +141,7 @@ const AddInventory = () => {
       <>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         {/* <button className="btn" onClick={() => document.getElementById('my_modal_5').showModal()}>open modal</button> */}
-        <dialog onClose={() => console.log("Closed")} ref={modal} id="my_modal_4" className="modal modal-middle">
+        <dialog ref={modal} id="my_modal_4" className="modal modal-middle">
           <div className="modal-box w-full max-w-5xl">
             {addToggle && <AddProduct closeModal={closeModal} update={updateProduct} />}
           </div>
@@ -132,8 +150,19 @@ const AddInventory = () => {
       <div className='flex justify-center '>
         <div className="text-sm breadcrumbs pl-5 flex flex-col lg:flex-row justify-between lg:items-center w-11/12 gap-2">
           <ul className='text-lg'>
-            <li><Link to={'..'}>Inventory</Link></li>
-            <li className='text-gray-400'>Add</li>
+            {
+              token.role === 'Admin'
+                ?
+                <>
+                  <li><Link to={'..'}>Manage</Link></li>
+                  <li className='text-gray-400'>Products</li>
+                </>
+                :
+                <>
+                  <li><Link to={'..'}>Inventory</Link></li>
+                  <li className='text-gray-400'>Add</li>
+                </>
+            }
           </ul>
           <div className='flex items-start gap-4 md:flex-row flex-col'>
             <div className="btn btn-md btn-accent text-gray-100 hover:shadow-lg" onClick={addProduct}>Add new Product</div>
@@ -151,7 +180,7 @@ const AddInventory = () => {
                   {
                     products.map((product, index) => {
                       return (
-                        <ProductCard editProduct={editProduct} product={product} key={product.id} AddToInventory={AddToInventory} />
+                        <ProductCard deleteProduct={deleteProduct} editProduct={editProduct} product={product} key={product.id} AddToInventory={AddToInventory} />
                       )
                     })
                   }
