@@ -46,10 +46,10 @@ const InventoryCard = (props) => {
 
   return (
     <div className="card rounded-md bg-base-100 drop-shadow-xl">
-      <div className='flex justify-center items-center min-w-full'><img style={{ aspectRatio: '4/3' }} src={image ? image : placeHolderImage} alt="Shoes" className='image-full rounded-t-md rounded-r-md' /></div>
-      <div className="card-body p-5">
+      <div className='flex justify-center items-center min-w-full'><img src={image ? image : placeHolderImage} alt="Shoes" className='image-full rounded-t-md aspect-square' /></div>
+      <div className="card-body p-4">
         <p>{inventory.product.brand && inventory.product.brand}</p>
-        <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden" style={{ fontSize: 19 }}>{inventory.product.name}</h2>
+        <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden">{inventory.product.name}</h2>
         <p className='overflow-ellipsis whitespace-nowrap overflow-hidden'>{inventory.product.description}</p>
         <p>{inventory.product.info && inventory.product.info}</p>
         <div className="card-actions justify-end">

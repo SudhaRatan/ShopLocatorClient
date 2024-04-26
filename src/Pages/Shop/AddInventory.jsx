@@ -37,7 +37,7 @@ const AddInventory = () => {
       if (products.data.products.length > 0) {
         setProducts(products.data.products)
         setCount(products.data.page)
-        setPage(Math.ceil(products.data.count / 10))
+        setPage(Math.ceil(products.data.count / 12))
       } else {
         getProducts()
       }
@@ -56,7 +56,7 @@ const AddInventory = () => {
     if (resp.status === 200) {
       getProducts()
     } else if (resp.status === 400) {
-      alert(resp.data)
+      setAlert({ show: true, message: resp.data, type: "error" })
     }
   }
 
@@ -154,12 +154,12 @@ const AddInventory = () => {
               token.role === 'Admin'
                 ?
                 <>
-                  <li><Link to={'..'}>Manage</Link></li>
+                  <li><Link to={'..'} className='font-semibold'>Manage</Link></li>
                   <li className='text-gray-400'>Products</li>
                 </>
                 :
                 <>
-                  <li><Link to={'..'}>Inventory</Link></li>
+                  <li><Link className='font-semibold' to={'..'}>Inventory</Link></li>
                   <li className='text-gray-400'>Add</li>
                 </>
             }
@@ -176,7 +176,7 @@ const AddInventory = () => {
             ? products.length !== 0
               ?
               <>
-                <div className='grid gap-5 w-11/12' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))" }}>
+                <div className='grid gap-5 w-11/12' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))" }}>
                   {
                     products.map((product, index) => {
                       return (

@@ -47,11 +47,11 @@ const ProductCard = (props) => {
           transform: click ? 'rotateY(180deg)' : null,
           transition: 'all 0.6s'
         }}>
-          <div className='absolute cursor-pointer right-0 text-accent m-2 rounded-full' onClick={() => setClick(!click)}><BsInfoCircleFill className='bg-base-100 rounded-full ' size={18} /></div>
-          <div className='flex justify-center items-center min-w-full'><img style={{ aspectRatio: '4/3' }} src={image ? image : placeHolderImage} alt="Shoes" className='w-full rounded-t-md rounded-r-md' /></div>
-          <div className="card-body">
+          <div className='absolute border-[1px] border-base-100 cursor-pointer right-0 text-accent m-2 rounded-full' onClick={() => setClick(!click)}><BsInfoCircleFill className='bg-base-100 rounded-full ' size={18} /></div>
+          <div className='flex justify-center items-center min-w-full'><img src={image ? image : placeHolderImage} alt="Shoes" className='w-full rounded-t-md aspect-square' /></div>
+          <div className="card-body p-4">
             <p>{product.brand && product.brand}</p>
-            <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden" style={{ fontSize: 19 }}>{product.name}</h2>
+            <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden">{product.name}</h2>
             <p className='overflow-ellipsis whitespace-nowrap overflow-hidden'>{product.description}</p>
             <p>{product.info && product.info}</p>
             {

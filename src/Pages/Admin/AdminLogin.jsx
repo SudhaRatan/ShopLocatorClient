@@ -47,7 +47,7 @@ const AdminLogin = () => {
           )}
         </div>
 
-        <input className='input input-bordered cursor-pointer' type="submit" />
+        <input className='btn btn-primary' type="submit" />
       </form>
     </div>
   )

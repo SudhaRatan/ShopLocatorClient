@@ -44,13 +44,13 @@ const ProductCardU = (props) => {
           transition: 'all 0.6s'
         }}>
           <div className='absolute cursor-pointer right-0 text-accent m-2 rounded-full' onClick={() => setClick(!click)}><BsInfoCircleFill className='bg-base-100 rounded-full ' size={18} /></div>
-          <div className='flex justify-center items-center min-w-full'><img style={{ aspectRatio: '4/3' }} src={image ? image : placeHolderImage} alt="Shoes" className='w-full rounded-t-md rounded-r-md' /></div>
-          <div className="card-body">
+          <div className='flex justify-center items-center min-w-full'><img style={{ aspectRatio: '4/3' }} src={image ? image : placeHolderImage} alt="Shoes" className='w-full rounded-t-md ' /></div>
+          <div className="card-body p-4">
             <p>{product.brand && product.brand}</p>
-            <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden" style={{ fontSize: 19 }}>{product.name}</h2>
+            <h2 className="font-bold overflow-ellipsis whitespace-nowrap overflow-hidden">{product.name}</h2>
             <p className='overflow-ellipsis whitespace-nowrap overflow-hidden'>{product.description}</p>
             <p>{product.info && product.info}</p>
-            <p className='font-semibold'>{product.price && "$"+product.price}</p>
+            <p className='font-semibold'>{product.price && "$" + product.price}</p>
             <div className="card-actions justify-end">
               <div className='tooltip border-2 p-1 rounded-lg shadow-md cursor-pointer' data-tip="Add to Cart" onClick={() => props.AddToInventory(product.id, count)}>
                 <TbShoppingCartPlus size={18} className='text-green-500' />

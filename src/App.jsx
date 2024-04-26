@@ -19,6 +19,7 @@ import Alert from './Components/Alert/Alert'
 import AdminLogin from './Pages/Admin/AdminLogin'
 import AdminHome from './Pages/Admin/AdminHome'
 import AddInventory from './Pages/Shop/AddInventory'
+import Categories from './Pages/Admin/Categories'
 
 export const API = import.meta.env.VITE_API_KEY
 
@@ -46,7 +47,7 @@ function App() {
   }
 
   return (
-    <div data-theme={theme ? "dark" : "light"}>
+    <div data-theme={theme ? "dark" : "light"} className='h-full w-full overflow-auto'>
       <AuthContext.Provider value={[token, setToken]}>
         <AlertContext.Provider value={[alert, setAlert]}>
 
@@ -96,7 +97,7 @@ function App() {
                   <Routes>
                     <Route path='/' element={<AdminHome />} />
                     <Route path='Products' element={<AddInventory />} />
-                    <Route path='Categories' element={<div>Categories</div>} />
+                    <Route path='Categories' element={<Categories />} />
                     <Route path='Users' element={<div>Users</div>} />
                     <Route path='Shops' element={<div>Shops</div>} />
                     <Route path="*" element={<Navigate to={'/login'} />} />

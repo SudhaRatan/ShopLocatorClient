@@ -60,7 +60,8 @@ function Shop() {
     if (s !== "" || s !== null) {
       let newArray = store.filter(item => {
         var name = item.product.name
-        return `${name}`.toLowerCase().includes(s.toLowerCase())
+        var st = s
+        return `${name}`.toLowerCase().includes(st.toLowerCase())
       });
       setInventories(newArray)
     }
@@ -96,7 +97,7 @@ function Shop() {
           ?
           inventories.length !== 0
             ?
-            <div className='grid gap-5 w-11/12' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))" }}>
+            <div className='grid gap-5 w-11/12' style={{ gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))" }}>
               {
                 inventories.map((inventory, index) => {
                   return (
